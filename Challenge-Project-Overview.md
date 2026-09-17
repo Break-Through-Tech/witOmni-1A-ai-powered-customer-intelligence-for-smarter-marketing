@@ -97,7 +97,7 @@ Chen, D., Sain, S. L., & Guo, K. (2012). [Data mining for the online retail indu
 
 **Official check-ins:** During our biweekly 45-minute AI Studio Lab Section meeting block (2nd and 4th week of every month)
 
- **Other ways to reach out to me with questions:** 
+**Other ways to reach out to me with questions:** 
 * Your team's channel within Break Through Tech’s Discord space
 * Email: pallavi@witomni.com; please copy your teammates and AI Studio Coach 
 * Request a team check-in on Zoom: Please use calendly but ideal to reach out to me via email first. CALENDLY: https://calendly.com/pallavi-witomni/discovery-call-ai-marketing
