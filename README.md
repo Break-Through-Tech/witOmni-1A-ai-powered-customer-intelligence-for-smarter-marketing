@@ -1,20 +1,19 @@
-# AI Studio Challenge Project Title
+# AI-Powered Customer Intelligence for Smarter Marketing
 
 > 💡 **Note for the team:** This is just a template. Update the above title with your AI Studio Challenge Project name. Remove all guidance notes and example text in this template and populate this README with your own content. You can work on this README throughout AI Studio, and get feedback from your AI Studio Coach and Challenge Advisor before finalizing it.  
 
 ---
 
-### 👥 **Team Members**
+### 👥 **Team Members** Alexis Chan, Donald Reith, Esther Li, Garima Thapa, Karen Mai, Sarah Fitz
 
-**Example:**
-
-| Name             | GitHub Handle | Contribution                                                             |
-|------------------|---------------|--------------------------------------------------------------------------|
-| Taylor Nguyen    | @taylornguyen | Data exploration, visualization, overall project coordination            |
-| Jordan Ramirez   | @jramirez     | Data collection, exploratory data analysis (EDA), dataset documentation  |
-| Amina Hassan     | @aminahassan  | Data preprocessing, feature engineering, data validation                 |
-| Priya Mehta      | @pmehta       | Model selection, hyperparameter tuning, model training and optimization  |
-| Chris Park       | @chrispark    | Model evaluation, performance analysis, results interpretation           |
+| Name             | GitHub Handle               | Contribution  (as of September)                                          |
+|------------------|-----------------------------|--------------------------------------------------------------------------|
+| Alexis Chan      | @alexisc413                 | Business Understanding                                                   |
+| Donald Reith     | @bananadonn                 | Integration & Validation                                                 |
+| Esther Li        | @esther-h-li                | Data Visualization                                                       |
+| Garima Thapa     | @garimathapa2248-star       | Data Exploration                                                         |
+| Karen Mai        | @kmai118                    | Data Cleaning                                                            |
+| Sarah Fitz       | @sarah-yiyang               | Customer Feature Engineering                                             |
 
 ---
 
@@ -43,26 +42,39 @@
 
 ## 🏗️ **Project Overview**
 
-**Describe:**
+This project is part of the Fall 2026 Break Through Tech AI Studio program, where we are applying AI and machine learning techniques to a real-world business challenge in collaboration with our AI Studio host company, Witomni.
 
-- How this project is connected to the Break Through Tech AI Program
-- Your AI Studio host company and the project objective and scope
-- The real-world significance of the problem and the potential impact of your work
+Witomni helps founder-led companies grow through AI-powered marketing initiatives, from strategy to campaign execution. The objective of our project is to use publicly available e-commerce transaction data to build a classification model that predicts which customers are most likely to become repeat purchasers. Our scope includes exploring and cleaning the transaction data, engineering customer-level features such as purchase frequency, recency, and average order value, developing and comparing classification models, and evaluating their performance using metrics such as precision, recall, F1-score, and ROC-AUC.
+
+The problem has real-world significance because understanding which customers are likely to make additional purchases can help businesses better target their marketing efforts and develop customer retention strategies. Our work aims to turn transaction history into actionable customer insights that can support more informed marketing decisions and help identify high-value customer segments.
 
 ---
 
 ## 📊 **Data Exploration**
 
-**You might consider describing the following (as applicable):**
+## Dataset
+**Name and Source:** Online Retail Dataset (Publicly available)  
+**Format:** CSV / Structured tabular data  
+**Size:** under 1gb  
+**Location:** https://archive.ics.uci.edu/dataset/352/online+retail
 
-* The dataset(s) used: origin, format, size, type of data
-* Data exploration and preprocessing approaches
-* Insights from your Exploratory Data Analysis (EDA)
-* Challenges and assumptions when working with the dataset(s)
+### Key Details
+- This is a transactional data set which contains all the transactions occurring between 01/12/2010 and 09/12/2011 for a UK-based and registered non-store online retail. The company mainly sells unique all-occasion gifts. Many customers of the company are wholesalers.
+
+### Key Variables
+- `InvoiceNo`: Invoice number. Nominal, a 6-digit integral number uniquely assigned to each transaction. If this code starts with letter 'c', it indicates a cancellation.
+- `StockCode`: Product (item) code. Nominal, a 5-digit integral number uniquely assigned to each distinct product.
+- `Description`: Product (item) name. Nominal.
+- `Quantity`: The quantities of each product (item) per transaction. Numeric.
+- `InvoiceDate`: Invoice Date and time. Numeric, the day and time when each transaction was generated.
+- `UnitPrice`: Unit price. Numeric, Product price per unit in sterling.
+- `CustomerID`: Customer number. Nominal, a 5-digit integral number uniquely assigned to each customer.
+- `Country`: Country name. Nominal, the name of the country where each customer resides.
+
 
 **Potential visualizations to include:**
 
-* Plots, charts, heatmaps, feature visualizations, sample dataset images
+* Plots, charts, heatmaps, feature visualizations, sample dataset images [to be included]
 
 ---
 
@@ -110,9 +122,13 @@ This project is licensed under the MIT License.
 
 ---
 
-## 📄 **References** (Optional but encouraged)
+## 📄 **References**
 
-Cite relevant papers, articles, or resources that supported your project.
+- Original Dataset Paper
+Chen, D., Sain, S. L., & Guo, K. (2012). [Data mining for the online retail industry: A case study of RFM model-based customer segmentation using data mining.](https://www.semanticscholar.org/paper/Data-mining-for-the-online-retail-industry%3A-A-case-Chen-Sain/e43a5a90fa33d419df42e485099f8f08badf2149)
+- Kumar, N. (2025). [Intelligent customer segmentation: unveiling consumer patterns with machine learning](https://link.springer.com/article/10.1007/s43995-025-00180-7)
+- S. Arefin et al. (2024), [Retail Industry Analytics: Unraveling Consumer Behavior through RFM Segmentation and Machine Learning](https://ieeexplore.ieee.org/document/10609927) 
+- https://github.com/MinoshPerera/Online-Retail-RFM-Customer-Segmentation
 
 ---
 
