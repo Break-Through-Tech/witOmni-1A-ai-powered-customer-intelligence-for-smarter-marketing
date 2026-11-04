@@ -79,19 +79,28 @@ The dashboard reads the model outputs below. It does **not** re-run models.
 
 The **only** customer grouping in the dashboard. Assigned by rules in `notebooks_models/5-final_model_comparison.ipynb`, checked in order:
 
-1. **High-probability active:** repeat probability ≥ 70% **and** last purchase ≤ 45 days ago
-2. **Promising reactivation:** repeat probability ≥ 50%
+1. **Loyal regulars:** repeat probability ≥ 70% **and** last purchase ≤ 45 days ago
+2. **Occasional regulars:** repeat probability ≥ 50%
 3. **At-risk / lapsed:** last purchase > 180 days ago
-4. **Nurture:** everyone else
+4. **New & undecided:** everyone else
 
 | Segment | Customers | Chance of return | Last bought | Orders | Spend | Revenue | Recommended action |
 |---|---|---|---|---|---|---|---|
-| High-probability active | 1,199 | 85% | 13 days | 7 | £2,322 | 71% | Recommend complementary products or loyalty benefits; avoid unnecessary discounts |
-| Promising reactivation | 1,480 | 63% | 55 days | 3 | £744 | 19% | Send personalised reminders and a time-limited incentive |
-| Nurture | 874 | 43% | 72 days | 1 | £259 | 5% | Use low-cost content and product discovery messages |
+| Loyal regulars | 1,199 | 85% | 13 days | 7 | £2,322 | 71% | Recommend complementary products or loyalty benefits; avoid unnecessary discounts |
+| Occasional regulars | 1,480 | 63% | 55 days | 3 | £744 | 19% | Send personalised reminders and a time-limited incentive |
+| New & undecided | 874 | 43% | 72 days | 1 | £259 | 5% | Use low-cost content and product discovery messages |
 | At-risk / lapsed | 785 | 36% | 267 days | 1 | £272 | 5% | Test win-back messaging, cap spend, and measure incremental lift |
 
 *Chance of return is the mean; other behavior columns are medians.*
+
+**Display names.** The dashboard uses friendlier names than the notebook. The CSV keeps the original names; the build script translates them (002 §2).
+
+| Notebook / CSV name | Dashboard name | Who they are |
+|---|---|---|
+| High-probability active | **Loyal regulars** | 76% have 5+ orders; last bought ~2 weeks ago |
+| Promising reactivation | **Occasional regulars** | 74% have 2–4 orders; last bought ~2 months ago |
+| Nurture | **New & undecided** | 78% bought once; became customers ~2–3 months ago |
+| At-risk / lapsed | **At-risk / lapsed** | 79% bought once; last bought ~9 months ago |
 
 > The team's K-means personas (Loyal, One-timer, New Shopper, Regular) closely match these segments and are **not** used in the dashboard. They stay in the presentation as supporting analysis.
 
@@ -113,7 +122,7 @@ Each item below becomes its own derived spec (see §10).
 - What defines the segment, in plain language.
 - Recommended action plus a **Generate strategy** button (§6.5).
 - Customers within a segment can be sorted by repeat-purchase probability.
-- **Focus segments:** Promising reactivation and Nurture (high value potential, low frequency). Highlighted on the overview and segment pages.
+- **Focus segments:** Occasional regulars and New & undecided (high value potential, low frequency). Highlighted on the overview and segment pages.
 - Export the segment's customer list (CSV).
 
 ### 6.3 Customers
@@ -143,7 +152,7 @@ Each item below becomes its own derived spec (see §10).
 - **Generate strategy** buttons on segment, customer, and category pages open the assistant with the question pre-filled.
 - The LLM receives **only aggregated or anonymized model outputs** (scores, segment, behavior metrics, top categories), never raw PII.
 - Output: a short, structured plan (objective, channel, offer, message angle, timing, success metric) plus a draft message.
-- Recommendations must stay consistent with the model's recommended action for that segment (e.g. no deep discounts for High-probability active).
+- Recommendations must stay consistent with the model's recommended action for that segment (e.g. no deep discounts for Loyal regulars).
 - Users can regenerate and copy the result.
 
 ### 6.6 Model insights and limitations

@@ -57,14 +57,14 @@ All money in GBP, rounded to 2 decimals. Probabilities as 0–1, rounded to 4 de
   "likely_to_repeat_pct": 0.62,
   "revenue_at_risk": 447753.48,
   "expected_category_spend": 0,
-  "segments": [{ "slug": "high-probability-active", "customers": 1199, "revenue": 6297528.78, "revenue_share": 0.71 }],
-  "top_actions": [{ "segment": "promising-reactivation", "action": "...", "customers": 1480 }]
+  "segments": [{ "slug": "loyal-regulars", "customers": 1199, "revenue": 6297528.78, "revenue_share": 0.71 }],
+  "top_actions": [{ "segment": "occasional-regulars", "action": "...", "customers": 1480 }]
 }
 ```
 - `likely_to_repeat_pct`: share of customers with probability ≥ 0.5
 - `revenue_at_risk`: total historical spend of At-risk / lapsed customers
 - `expected_category_spend`: sum of Expected spend (£) across all customer × category rows
-- `top_actions`: the two focus segments first (Promising reactivation, Nurture), then the rest by revenue
+- `top_actions`: the two focus segments first (Occasional regulars, New & undecided), then the rest by revenue
 
 ### 3.2 `segments.json`
 One object per segment: `slug`, `customers`, `revenue`, `revenue_share`, `avg_probability`, medians (`recency_days`, `invoice_count`, `total_spend`, `avg_order_value`), and the same medians for **all customers** for comparison. Names, colors, rules text, and recommended actions are **not** stored here; they live in `lib/segments.ts` (§5).
@@ -73,7 +73,7 @@ One object per segment: `slug`, `customers`, `revenue`, `revenue_share`, `avg_pr
 One row per customer (4,338):
 ```json
 {
-  "id": 12347, "segment": "high-probability-active", "probability": 0.9062,
+  "id": 12347, "segment": "loyal-regulars", "probability": 0.9062,
   "recency_days": 2, "invoice_count": 7, "total_spend": 4310.0,
   "avg_order_value": 615.71, "country": "Iceland", "top_category": "Kitchenware & Dining"
 }
@@ -140,7 +140,7 @@ Hand-written (see 001). The script leaves it alone.
 
 The script stops with a clear error if any of these fail:
 
-- Every `marketing_segment` value is one of the 4 known segments
+- Every `marketing_segment` value is one of the 4 known notebook names, then translated to its slug: `High-probability active` → `loyal-regulars`, `Promising reactivation` → `occasional-regulars`, `Nurture` → `new-and-undecided`, `At-risk / lapsed` → `at-risk-lapsed` (display names in 000 §5)
 - Every probability is between 0 and 1
 - No duplicate customer IDs
 - Every category name in the scores matches `stockcode_to_category.csv`
@@ -154,7 +154,16 @@ And prints a short report: customer count, customers without category scores (ex
 
 | File | Contents |
 |---|---|
-| `lib/segments.ts` | **Single source** for each segment: `slug`, display name, color, rule text, recommended action, `focus: true/false` (000 NFR-7) |
+| `lib/segments.ts` | **Single source** for each segment: `slug`, display name, one-line description, color, rule text, recommended action, `focus: true/false` (000 NFR-7) |
+
+**Segment descriptions** (shown on cards, segment pages, and tooltips):
+
+| Segment | Description |
+|---|---|
+| Loyal regulars | Your best customers. They order often and bought recently. |
+| Occasional regulars | Come back every so often. A nudge can turn them into regulars. |
+| New & undecided | Bought once, recently. Could become regulars or drift away. |
+| At-risk / lapsed | Bought once, long ago. Unlikely to return without a reason. |
 | `lib/types.ts` | TypeScript types matching every JSON shape in §3 |
 | `lib/data.ts` | Loaders: `getOverview()`, `getSegments()`, `getCustomers()`, `getCustomer(id)`, `getCategories()`, `getCategory(slug)`, `getModelMetrics()` |
 
@@ -175,7 +184,7 @@ And prints a short report: customer count, customers without category scores (ex
 
 ## 6. Known caveats
 
-- **Category scores are older than repeat scores.** The category model used a cutoff of ~2011-09-07 and predicts the quarter that's already in the data. Repeat scores predict the 90 days after the data ends. Fine for ranking; mention on the Model insights page.
+- **Category scores are older than repeat scores.** The category model used a cutoff of ~2011-09-07 and predicts the quarter that's already in the data. Repeat scores predict the 90 days after the data ends. Fine for ranking; mention on the Model insights page. **Fix planned** (§7).
 - **~989 customers have no category scores** (no purchases before the category model's cutoff). They show "Not enough history" (000 FR-6).
 - **No outlier removal.** Very large one-off orders (e.g. customer 12346, £77k in one order) stay in, matching the model inputs.
 
@@ -185,3 +194,4 @@ And prints a short report: customer count, customers without category scores (ex
 
 1. ~~Likely new buyer threshold~~ **Decided:** buy probability ≥ 30% (§3.6).
 2. ~~Low-purchase rule~~ **Decided:** both, with a toggle (fewest buyers / least revenue), bottom 5 flagged (§3.5).
+3. **Category model re-run (planned):** re-score the category model as of the end of the data, the same way notebook 5 does for repeat scores (train on the cutoff, then score everyone as of the last date). This lines up both models on the next 90 days and gives category scores to the 989 customers who have none. Owner: notebook 4 author, or a standalone script on its own branch. Output must keep the same CSV format so no frontend changes are needed; then re-run `build_data.py`.

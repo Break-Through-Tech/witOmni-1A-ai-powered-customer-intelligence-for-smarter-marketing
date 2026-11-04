@@ -63,9 +63,9 @@ Fixed order, validated for colorblind safety (light and dark, side-by-side use).
 
 | # | Segment | Light | Dark |
 |---|---|---|---|
-| 1 | High-probability active | `#2a78d6` blue | `#3987e5` |
-| 2 | Promising reactivation ⭐ | `#eb6834` orange | `#d95926` |
-| 3 | Nurture ⭐ | `#1baf7a` aqua | `#199e70` |
+| 1 | Loyal regulars | `#2a78d6` blue | `#3987e5` |
+| 2 | Occasional regulars ⭐ | `#eb6834` orange | `#d95926` |
+| 3 | New & undecided ⭐ | `#1baf7a` aqua | `#199e70` |
 | 4 | At-risk / lapsed | `#eda100` yellow | `#c98500` |
 
 ⭐ = focus segment (000 §6.2), shown with a small "Focus" badge, never a different color.
@@ -138,9 +138,9 @@ Fixed order, validated for colorblind safety (light and dark, side-by-side use).
 | **Probability display** | "72%" + thin bar; tooltip: "Chance this customer buys again in the next 90 days" |
 | **Data table** | TanStack Table: sort, filter, paginate (50/page), sticky header, CSV export button |
 | **Filter bar** | One row above content: segment, probability range, country, category |
-| **Recommended action card** | Segment's action in plain text + "Generate strategy" button |
+| **Segment card** | Segment badge, one-line description, size (customers, % of customers, % of revenue), typical customer (chance, orders, last bought), recommended action, "Generate strategy" button |
 | **Strategy card** | Assistant output: objective, channel, offer, message angle, timing, success metric, draft message, Copy button |
-| **Chat panel** | Message list, streaming responses, "Looking up data…" while tools run, suggested starter questions |
+| **Chat panel** | Message list, streaming responses, "Looking up data…" while tools run, **rotating placeholder** in the text box that cycles example questions every ~4 s (e.g. "How do I win back my lapsed customers?", "Which customers should get a Christmas offer?", "How do I turn Occasional regulars into Loyal regulars?"); pauses on focus, static if reduced motion is on |
 | **Empty / missing state** | Friendly text, e.g. "Not enough history for category predictions" (000 FR-6) |
 | **Error state** | Status icon + text + retry; never blocks the rest of the page (000 FR-7) |
 | **Info tooltip** | ⓘ icon next to any term in the glossary (§6) |
