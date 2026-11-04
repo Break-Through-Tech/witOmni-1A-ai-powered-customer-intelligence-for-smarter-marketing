@@ -68,6 +68,7 @@ All money in GBP, rounded to 2 decimals. Probabilities as 0–1, rounded to 4 de
 
 ### 3.2 `segments.json`
 One object per segment: `slug`, `customers`, `revenue`, `revenue_share`, `avg_probability`, medians (`recency_days`, `invoice_count`, `total_spend`, `avg_order_value`), and the same medians for **all customers** for comparison. Names, colors, rules text, and recommended actions are **not** stored here; they live in `lib/segments.ts` (§5).
+- Also per segment: `top_categories` (top 5 by total expected spend, each with likely buyer count), `leans` (up to 2 categories with lean ≥ 1.10, see 005 §3.6), and `no_category_scores` (customers without category scores) for the segment page (005 §3.6).
 
 ### 3.3 `customers.json` (list view, sent to browser)
 One row per customer (4,338):
