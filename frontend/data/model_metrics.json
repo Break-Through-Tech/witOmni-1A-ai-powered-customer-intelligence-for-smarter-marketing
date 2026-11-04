@@ -1,0 +1,86 @@
+{
+  "_source": "Copied by hand from notebooks_models/5-final_model_comparison.ipynb and 4-category_propensity_model.ipynb saved outputs on 2026-11-03. Update by hand if the models are retrained.",
+  "repeat_purchase": {
+    "target": "Customer buys again within 90 days of the cutoff (2011-09-10)",
+    "scoring_model": "Gradient Boosting",
+    "final_model": "Random Forest",
+    "_scoring_model_note": "TEMPORARY: scores currently come from Gradient Boosting. The team chose Random Forest as the final model; switch when its scores file is ready (see spec 001 section 8).",
+    "test_set_size": 674,
+    "test_results": [
+      { "model": "Gradient Boosting", "accuracy": 0.688, "precision": 0.734, "recall": 0.711, "f1": 0.722, "roc_auc": 0.746 },
+      { "model": "Random Forest", "accuracy": 0.666, "precision": 0.771, "recall": 0.589, "f1": 0.668, "roc_auc": 0.741 },
+      { "model": "Logistic Regression", "accuracy": 0.650, "precision": 0.776, "recall": 0.542, "f1": 0.638, "roc_auc": 0.729 },
+      { "model": "Decision Tree", "accuracy": 0.639, "precision": 0.783, "recall": 0.508, "f1": 0.616, "roc_auc": 0.718 }
+    ],
+    "baselines": [
+      { "model": "Recency only", "roc_auc": 0.679 },
+      { "model": "Random guess", "accuracy": 0.501, "precision": 0.562, "recall": 0.565, "f1": 0.564, "roc_auc": 0.491 }
+    ],
+    "cross_validated_roc_auc": [
+      { "model": "Gradient Boosting", "mean": 0.751, "std": 0.016 },
+      { "model": "Random Forest", "mean": 0.749, "std": 0.015 },
+      { "model": "Logistic Regression", "mean": 0.746, "std": 0.018 },
+      { "model": "Decision Tree", "mean": 0.729, "std": 0.019 }
+    ],
+    "feature_importance": {
+      "_method": "Permutation importance on the test set: drop in ROC-AUC when the feature is shuffled",
+      "items": [
+        { "feature": "recency_days", "label": "Days since last purchase", "auc_drop": 0.0257 },
+        { "feature": "invoice_count", "label": "Number of orders", "auc_drop": 0.0191 },
+        { "feature": "unique_products", "label": "Number of different products", "auc_drop": 0.0170 },
+        { "feature": "total_spend", "label": "Total spend", "auc_drop": 0.0045 },
+        { "feature": "repeat_purchase_rate", "label": "Share of products re-bought", "auc_drop": 0.0042 },
+        { "feature": "mean_order_gap_days", "label": "Average days between orders", "auc_drop": 0.0041 },
+        { "feature": "total_items", "label": "Total items bought", "auc_drop": 0.0028 },
+        { "feature": "avg_order_value", "label": "Average order value", "auc_drop": 0.0026 },
+        { "feature": "customer_age_days", "label": "Days as a customer", "auc_drop": -0.0003 },
+        { "feature": "product_diversity_ratio", "label": "Product variety per item", "auc_drop": -0.0007 }
+      ]
+    },
+    "direction": {
+      "_method": "Logistic regression coefficients on standardised features. Positive = more likely to buy again.",
+      "items": [
+        { "feature": "unique_products", "coefficient": 0.687 },
+        { "feature": "total_spend", "coefficient": 0.570 },
+        { "feature": "recency_days", "coefficient": -0.568 },
+        { "feature": "avg_order_value", "coefficient": -0.554 },
+        { "feature": "invoice_count", "coefficient": 0.492 },
+        { "feature": "customer_age_days", "coefficient": 0.327 },
+        { "feature": "mean_order_gap_days", "coefficient": -0.166 },
+        { "feature": "total_items", "coefficient": -0.136 },
+        { "feature": "repeat_purchase_rate", "coefficient": 0.095 },
+        { "feature": "product_diversity_ratio", "coefficient": -0.036 }
+      ]
+    },
+    "threshold_tradeoff": {
+      "_method": "Final model on the test set at different probability cut-offs",
+      "items": [
+        { "threshold": 0.30, "share_targeted": 0.978, "precision": 0.578, "recall": 0.992 },
+        { "threshold": 0.40, "share_targeted": 0.772, "precision": 0.640, "recall": 0.867 },
+        { "threshold": 0.50, "share_targeted": 0.552, "precision": 0.734, "recall": 0.711 },
+        { "threshold": 0.60, "share_targeted": 0.392, "precision": 0.795, "recall": 0.547 },
+        { "threshold": 0.70, "share_targeted": 0.272, "precision": 0.863, "recall": 0.411 },
+        { "threshold": 0.80, "share_targeted": 0.180, "precision": 0.901, "recall": 0.284 }
+      ]
+    }
+  },
+  "category_propensity": {
+    "target": "Customer buys from the category in the quarter after the cutoff",
+    "scoring_model": "Neural net",
+    "_scoring_model_note": "Notebook 4 marks version A as best; the export uses whichever network was trained last. Only customers with purchases before the cutoff are scored (3,349).",
+    "results": [
+      { "model": "Neural net (A)", "mean_auc": 0.755, "recall_at_5": 0.746 },
+      { "model": "LightGBM", "mean_auc": 0.743, "recall_at_5": 0.730 },
+      { "model": "Baseline: purchase frequency", "mean_auc": 0.727, "recall_at_5": 0.709 }
+    ],
+    "_recall_at_5": "Share of the categories a customer actually bought that were in the model's top 5 guesses"
+  },
+  "limitations": [
+    "One UK gift retailer, Dec 2010 to Dec 2011, many customers are wholesalers. Results may not carry over to other businesses.",
+    "One time window that includes the Christmas peak, so probabilities are likely too optimistic. Use them to rank customers, not as exact chances.",
+    "Small test set (about 670 customers). Differences of a few points between models are within noise.",
+    "Prediction is not causation. The model predicts who will buy again, not who will buy because of marketing. Use A/B tests to measure campaign impact.",
+    "Only customers with a CustomerID are included (about 25% of rows had none). Brand-new customers can't be scored.",
+    "Country was excluded from the features to avoid targeting by nationality."
+  ]
+}
