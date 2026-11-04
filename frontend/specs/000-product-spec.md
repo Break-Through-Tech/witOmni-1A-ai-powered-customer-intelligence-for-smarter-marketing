@@ -122,10 +122,10 @@ Each item below becomes its own derived spec (see §10).
 
 ### 6.4 Category opportunities
 - Ranking of the 27 categories by total expected spend and number of likely buyers.
-- **Low-purchase categories:** flag the categories with the fewest buyers so the business can grow them.
+- **Low-purchase categories:** a toggle switches between **fewest buyers** and **least revenue**; the bottom 5 for the selected view are flagged so the business can grow them.
 - Per category, two target lists:
   - **Existing buyers:** customers who already buy it (recommend more items).
-  - **Likely new buyers:** customers with a high buy probability who haven't bought it yet (cross-sell).
+  - **Likely new buyers:** customers who haven't bought it yet with a buy probability of at least 30% (cross-sell; see 002 §3.6 for why 30%).
 - Customers are ranked **highest first by Expected spend (£)** from the category model. No extra multiplication by repeat-purchase probability; the category score already accounts for whether they return.
 - Filter by segment. This answers "who should get the Christmas campaign?"
 - Export the target list.
