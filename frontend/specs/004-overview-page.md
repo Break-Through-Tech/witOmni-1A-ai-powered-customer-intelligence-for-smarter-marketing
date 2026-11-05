@@ -60,7 +60,7 @@ Top category opportunities ─────────────────�
 
 Each tile has an ⓘ tooltip from the glossary (003 §6).
 
-> **Pending re-run:** Category opportunity currently uses category scores for a past quarter (002 §6). Once the category model is re-scored as of the end of the data (002 §7), the value updates automatically. Until then the tooltip adds: "Based on an earlier prediction window."
+> **Pending re-run:** Category opportunity currently uses category scores for a past quarter (002 §6). Once the category model is re-scored as of the end of the data (002 §7), the value updates automatically. While `category_scores_current` is false (002 §3.1), the tooltip adds: "Based on an earlier prediction window." It disappears automatically after the re-run.
 
 ### 3.3 Where to focus
 - Two cards, one per focus segment (Occasional regulars, New & undecided), in segment order.

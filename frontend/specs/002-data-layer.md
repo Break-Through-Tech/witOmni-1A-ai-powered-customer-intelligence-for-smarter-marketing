@@ -41,6 +41,7 @@ Same as notebook 5, so numbers match the model:
 3. Drop cancellations (`InvoiceNo` starts with `C`)
 4. Keep only `Quantity > 0` and `UnitPrice > 0`
 5. `TotalPrice = Quantity × UnitPrice`
+6. **Read `StockCode` as text** (strip, uppercase) in both the transactions and `stockcode_to_category.csv` before joining. Excel loads some codes as numbers and some as text; joining without this maps only 8% of revenue to a category instead of 98%.
 
 ---
 
@@ -64,6 +65,7 @@ All money in GBP, rounded to 2 decimals. Probabilities as 0–1, rounded to 4 de
 - `likely_to_repeat_pct`: share of customers with probability ≥ 0.5
 - `revenue_at_risk`: total historical spend of At-risk / lapsed customers
 - `expected_category_spend`: sum of Expected spend (£) across all customer × category rows
+- `category_scores_current` (true/false): whether category scores cover the same 90 days as repeat scores. The script reads `scored_as_of` from `data/category_data/customer_per_category_scores_meta.json`; if that file is missing (today), it's `false`. The re-run (§7) writes that file, so the flag flips by itself. The UI shows "Based on an earlier prediction window" **only when this is false**; nobody has to remember to remove it.
 - `top_actions`: the two focus segments first (Occasional regulars, New & undecided), then the rest by revenue
 
 ### 3.2 `segments.json`
@@ -146,6 +148,7 @@ The script stops with a clear error if any of these fail:
 - No duplicate customer IDs
 - Every category name in the scores matches `stockcode_to_category.csv`
 - Exactly 27 categories in the output (no `DROP`)
+- At least 95% of cleaned transaction rows map to a category (currently 99.6%)
 
 And prints a short report: customer count, customers without category scores (expected ~989), rows dropped by cleaning, output file sizes.
 
@@ -195,4 +198,4 @@ And prints a short report: customer count, customers without category scores (ex
 
 1. ~~Likely new buyer threshold~~ **Decided:** buy probability ≥ 30% (§3.6).
 2. ~~Low-purchase rule~~ **Decided:** both, with a toggle (fewest buyers / least revenue), bottom 5 flagged (§3.5).
-3. **Category model re-run (planned):** re-score the category model as of the end of the data, the same way notebook 5 does for repeat scores (train on the cutoff, then score everyone as of the last date). This lines up both models on the next 90 days and gives category scores to the 989 customers who have none. Owner: notebook 4 author, or a standalone script on its own branch. Output must keep the same CSV format so no frontend changes are needed; then re-run `build_data.py`.
+3. **Category model re-run (planned):** re-score the category model as of the end of the data, the same way notebook 5 does for repeat scores (train on the cutoff, then score everyone as of the last date). This lines up both models on the next 90 days and gives category scores to the 989 customers who have none. Owner: notebook 4 author, or a standalone script on its own branch. Output must keep the same CSV format so no frontend changes are needed, **plus** a `customer_per_category_scores_meta.json` with `{ "scored_as_of": "2011-12-10" }` (§3.1); then re-run `build_data.py`.
