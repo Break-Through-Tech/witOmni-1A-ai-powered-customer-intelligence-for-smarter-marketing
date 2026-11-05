@@ -14,18 +14,36 @@ const PAGE = 25;
  * plain-words summary line, CSV export of every row (not just shown ones).
  * Rows arrive already sorted.
  */
+export type ListSort = "likely" | "spend" | "recent";
+
 export function CustomerList({
   rows,
   noun = "customers",
   showSegment = true,
   exportName,
+  sort,
+  onSort,
 }: {
   rows: CustomerRow[];
   /** e.g. "Occasional regulars" → "Showing the top 25 of 1,480 Occasional regulars". */
   noun?: string;
   showSegment?: boolean;
   exportName: string;
+  /** When given, the Chance / Spend / Last bought headers become sort buttons. */
+  sort?: string;
+  onSort?: (sort: ListSort) => void;
 }) {
+  const header = (label: string, key: ListSort, align = "") =>
+    onSort ? (
+      <th scope="col" className={`px-4 py-2 font-normal ${align}`} aria-sort={sort === key ? "descending" : "none"}>
+        <button type="button" onClick={() => onSort(key)} className={`hover:text-primary ${sort === key ? "font-medium text-primary" : ""}`}>
+          {label}
+          {sort === key ? " ↓" : ""}
+        </button>
+      </th>
+    ) : (
+      <th scope="col" className={`px-4 py-2 font-normal ${align}`}>{label}</th>
+    );
   const [shown, setShown] = useState(PAGE);
   const visible = rows.slice(0, shown);
 
@@ -55,9 +73,9 @@ export function CustomerList({
               {showSegment && (
                 <th scope="col" className="px-4 py-2 font-normal">Segment</th>
               )}
-              <th scope="col" className="px-4 py-2 font-normal">Chance of buying again</th>
-              <th scope="col" className="px-4 py-2 text-right font-normal">Total spend</th>
-              <th scope="col" className="px-4 py-2 text-right font-normal">Last bought</th>
+              {header("Chance of buying again", "likely")}
+              {header("Total spend", "spend", "text-right")}
+              {header("Last bought", "recent", "text-right")}
               <th scope="col" className="w-8 px-2 py-2"><span className="sr-only">Open</span></th>
             </tr>
           </thead>

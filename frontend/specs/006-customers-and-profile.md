@@ -77,7 +77,7 @@ Column headers are also clickable to sort. Orders, average order value, country,
 
 - Filters combine with AND. **Clear** resets all.
 - Active filters show as removable chips under the filter row.
-- **Persistence (000 FR-4):** filters and sort live in the URL (`?segment=…&min=50`). Back button and shared links keep them. Links from other pages (e.g. Overview "Likely to buy again" tile → `?min=50`) use the same params.
+- **Persistence (000 FR-4):** filters and sort live in the URL (`?segment=…&last=30&chance=high,medium`). Back button and shared links keep them. Links from other pages (e.g. Overview "Likely to buy again" tile → `?chance=high,medium`) use the same params.
 
 ### 2.5 Export
 **Export list** downloads every customer matching the current filters (not just the 25 shown), with all fields from `customers.json` (orders, AOV, country, top category included), probability as %, money as numbers. File name: `customers-YYYY-MM-DD.csv` (000 FR-5).
