@@ -95,7 +95,7 @@ export function HBarChart({
             <BarChart
               data={rows}
               layout="vertical"
-              margin={{ top: 0, right: 128, bottom: 0, left: 0 }}
+              margin={{ top: 0, right: 150, bottom: 0, left: 0 }}
               barCategoryGap={2}
               className={rows.some((r) => r.href) ? "cursor-pointer" : ""}
               // Whole row is the hit target, bigger than the thin bar.
