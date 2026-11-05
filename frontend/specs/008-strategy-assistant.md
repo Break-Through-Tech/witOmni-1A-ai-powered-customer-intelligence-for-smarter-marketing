@@ -127,20 +127,20 @@ One **system prompt** in `lib/assistant/prompt.ts`, built at request time from s
 
 ## 7. Output format (strategy card)
 
-Requested with **structured output** (a typed schema in the AI SDK), not parsed from free text:
+Delivered through a **`present_strategy` tool** with a typed schema (not parsed from free text). The model calls it once with the finished plan; the run stops right after (`hasToolCall`), so a plan costs no extra model call. Schema validation is done by the AI SDK.
 
 | Field | Notes |
 |---|---|
-| `audience` | `{ type: segment \| category \| customer, key, label, count }`; `count` filled by server (§6) |
+| `audience_type`, `audience_key`, `new_buyers?` | What the plan targets. The server turns this into `audience: { label, count, href }` from the data (§6) |
 | `objective` | One sentence |
 | `channel` | Email, SMS, social, on-site, or mixed |
 | `offer` | Concrete, or "No discount" |
 | `message_angle` | One sentence |
 | `timing` | When and why (use recency where relevant) |
 | `success_metric` | One measurable thing over 90 days |
-| `draft_message` | Subject + ≤ 120-word body, `{first_name}` placeholder (we have no names, 000 NFR-5) |
+| `draft_subject`, `draft_body` | Body ≤ 120 words, `{first_name}` placeholder (we have no names, 000 NFR-5) |
 
-If structured output fails validation, retry once; then fall back to plain text.
+If the model answers in text instead, the text is shown as a normal reply.
 
 ---
 
@@ -152,10 +152,20 @@ If structured output fails validation, retry once; then fall back to plain text.
 | Questions per visitor | 10 per 10 minutes (by IP, best effort) | "You've asked a lot quickly. Try again in a few minutes." |
 | Conversation sent to the model | Last 6 messages | Older ones dropped silently |
 | Response timeout | 30 s | "That took too long. Try again." + Retry |
-| Provider quota / outage | n/a | "The assistant is busy right now. The rest of the dashboard still works." (000 FR-7) |
+| Questions per day, all visitors | 300 (`ASSISTANT_DAILY_CAP`) | Same "busy" message |
+| Provider quota / outage | n/a | Fallback model first; if that fails too: "The assistant is busy right now. The rest of the dashboard still works." (000 FR-7) |
 
-- Model: a current **Gemini Flash** model via env vars (001 §5). Switching provider is a config change.
-- Rate limit is in-memory per server instance (best effort; good enough for a demo). Upgrade path: Vercel KV.
+### Staying inside the free tier (decided 2026-11-05)
+
+Each lookup is one model request, and free daily caps are small, so:
+
+1. **Models:** main `gemini-flash-lite-latest` (the Flash-Lite family has the most free room), **fallback `gemini-3.1-flash-lite`** (separate free quota). When the main model returns busy / rate-limited (429, 5xx), the server reruns the same call on the fallback, invisibly. Set via `LLM_MODEL` and `LLM_FALLBACK_MODEL`. (`gemini-2.5-flash-lite` is closed to new keys; full Flash was often overloaded in testing.)
+2. **Look up first:** Generate-button questions name exactly what they're about, so the server fetches that segment / customer / category up front and puts it in the prompt (`lib/assistant/prefetch.ts`). A Generate click is then **one** model request.
+3. **Saved answers:** first-turn Generate answers are cached for 24 h per server instance, so repeat clicks use no quota. **Regenerate** skips the cache.
+4. Typed questions still use the tools (up to 5 lookups).
+
+- Rate limits are in-memory per server instance (best effort; good enough for a demo). Upgrade path: Vercel KV.
+- Built on AI SDK v7 (`ai`, `@ai-sdk/google`, `@ai-sdk/react`); fallback and cache are model middleware (`lib/assistant/model.ts`).
 
 ---
 

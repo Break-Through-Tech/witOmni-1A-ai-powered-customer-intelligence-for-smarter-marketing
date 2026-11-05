@@ -82,15 +82,15 @@ frontend/
     lib/
       data.ts         ← typed loaders for data/*.json
       segments.ts     ← single source of segment names, colors, rules (000 NFR-7)
-      tools.ts        ← assistant tool definitions
+      assistant/      ← lookups, tools, prompt, model + fallback, limits
 ```
 
 ---
 
 ## 5. AI assistant setup
 
-- Provider and model come from env vars: `LLM_PROVIDER`, `LLM_MODEL`, `LLM_API_KEY`. Switching providers is a config change, not a code change.
-- Tools in `lib/tools.ts` are plain functions with typed inputs, called through the AI SDK's built-in tool calling.
+- Provider and model come from env vars: `LLM_PROVIDER`, `LLM_MODEL`, `LLM_FALLBACK_MODEL`, `LLM_API_KEY`. Default: free-tier Gemini Flash-Lite with a second Flash-Lite as automatic fallback (008 §8).
+- Lookups in `lib/assistant/lookups.ts` are plain functions (no AI code); `lib/assistant/tools.ts` wraps them for the AI SDK's tool calling.
 - **Stretch goal:** wrap the same tools as an MCP server. Keep tools free of UI code so this needs no rewrite.
 - **Free-tier protection** (public link): simple per-visitor rate limit, a max number of tool calls per question, and a friendly "assistant is busy, try again" message when the quota runs out (000 FR-7).
 
