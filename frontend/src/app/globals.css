@@ -9,6 +9,7 @@
   --text-secondary: #52514e;
   --text-muted: #7a7974;
   --accent: #2a78d6;
+  --neutral-bar: #b9b8b2; /* "all customers" comparison bars */
 }
 
 @media (prefers-color-scheme: dark) {
@@ -20,6 +21,7 @@
     --text-secondary: #c3c2b7;
     --text-muted: #8f8e87;
     --accent: #3987e5;
+    --neutral-bar: #5c5b56;
   }
 }
 
@@ -31,6 +33,7 @@
   --text-secondary: #c3c2b7;
   --text-muted: #8f8e87;
   --accent: #3987e5;
+  --neutral-bar: #5c5b56;
 }
 
 @theme inline {
