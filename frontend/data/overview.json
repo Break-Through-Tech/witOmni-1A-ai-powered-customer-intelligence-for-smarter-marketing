@@ -1,0 +1,60 @@
+{
+  "category_scores_current": false,
+  "data_range": {
+    "end": "2011-12-09",
+    "start": "2010-12-01"
+  },
+  "expected_category_spend": 883133.63,
+  "likely_to_repeat_pct": 0.6176,
+  "revenue_at_risk": 447753.48,
+  "scored_as_of": "2011-12-10",
+  "segments": [
+    {
+      "customer_share": 0.2764,
+      "customers": 1199,
+      "revenue": 6297528.78,
+      "revenue_share": 0.7086,
+      "slug": "loyal-regulars"
+    },
+    {
+      "customer_share": 0.3412,
+      "customers": 1480,
+      "revenue": 1675428.12,
+      "revenue_share": 0.1885,
+      "slug": "occasional-regulars"
+    },
+    {
+      "customer_share": 0.2015,
+      "customers": 874,
+      "revenue": 466498.51,
+      "revenue_share": 0.0525,
+      "slug": "new-and-undecided"
+    },
+    {
+      "customer_share": 0.181,
+      "customers": 785,
+      "revenue": 447753.48,
+      "revenue_share": 0.0504,
+      "slug": "at-risk-lapsed"
+    }
+  ],
+  "top_actions": [
+    {
+      "customers": 1480,
+      "segment": "occasional-regulars"
+    },
+    {
+      "customers": 874,
+      "segment": "new-and-undecided"
+    },
+    {
+      "customers": 1199,
+      "segment": "loyal-regulars"
+    },
+    {
+      "customers": 785,
+      "segment": "at-risk-lapsed"
+    }
+  ],
+  "total_customers": 4338
+}

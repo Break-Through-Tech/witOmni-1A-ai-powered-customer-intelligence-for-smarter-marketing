@@ -75,9 +75,9 @@ Christmas                                         [Generate campaign]
 
 [Buyers 2,587] [Past revenue £451K] [Likely buyers 1,081] [Expected spend £40K]
 
-[Likely new buyers (1,082) | Already buy it (…)]        Segment: [Any ▾]
+[Likely new buyers (525) | Already buy it (1,901)]       Segment: [Any ▾]
 
-Showing the top 25 of 1,082 customers who haven't bought Christmas yet
+Showing the top 25 of 525 customers who haven't bought Christmas yet
                                                          [Export list]
 Customer   Segment               Chance to buy   Expected spend   Last bought
 …
@@ -111,7 +111,7 @@ Customer   Segment               Chance to buy   Expected spend   Last bought
 
 - Summary line in plain words: "Showing the top 25 of {n} customers who haven't bought {category} yet."
 - **Export list:** every customer in the current tab + filter (up to the 500 stored, 002 §3.6).
-- **Fewer than 20 likely new buyers:** replace the list with "Only {n} customers look likely to try {category}. A broad campaign may work better than a targeted list." Currently: Umbrellas & Rainwear (9).
+- **Fewer than 20 likely new buyers:** replace the list with "Only {n} customers look likely to try {category}. A broad campaign may work better than a targeted list." Currently: Umbrellas & Rainwear (8).
 
 ### 3.3 No category-specific notes
 No hard-coded notes on individual categories (e.g. a Christmas seasonality note). They'd go stale after the category re-run (002 §7). The general "estimated" tooltip (§2.2) covers it.
@@ -130,21 +130,21 @@ No hard-coded notes on individual categories (e.g. a Christmas seasonality note)
 
 ## 5. Current data (as of 2026-11-05)
 
-Checked with the fixed StockCode join (002 §2 rule 6).
+From `build_data.py` output (fixed StockCode join, 002 §2 rule 6). "Likely new buyers" = never bought the category **in the full history** + ≥ 30%, so counts are lower than the backtest in 002 §3.6 (which only looked before the cutoff).
 
 | Category | Expected spend | Likely buyers (≥ 50%) | Likely new buyers (≥ 30%) | Buyers | Revenue |
 |---|---|---|---|---|---|
-| Kitchenware & Dining | £76,931 | 827 | 95 | 3,043 | £723K |
-| Party & Tableware | £62,527 | 886 | 106 | 3,191 | £590K |
-| Boxes, Tins & Storage | £62,149 | 841 | 126 | 2,997 | £682K |
-| Bags, Purses & Travel | £61,350 | 795 | 115 | 2,653 | £894K |
-| Baking | £59,545 | 660 | 125 | 2,849 | £610K |
+| Kitchenware & Dining | £76,931 | 827 | 65 | 3,043 | £723K |
+| Party & Tableware | £62,527 | 886 | 64 | 3,191 | £590K |
+| Boxes, Tins & Storage | £62,149 | 841 | 88 | 2,997 | £682K |
+| Bags, Purses & Travel | £61,350 | 795 | 81 | 2,653 | £894K |
+| Baking | £59,545 | 660 | 78 | 2,849 | £610K |
 | … | | | | | |
-| Christmas | £40,188 | 1,081 | 1,082 | 2,587 | £451K |
+| Christmas | £40,188 | 1,081 | 525 | 2,587 | £451K |
 | … | | | | | |
-| Umbrellas & Rainwear | £9,056 | 26 | 9 | 702 | £87K |
-| Floral & Botanical | £6,025 | 41 | 45 | 1,334 | £55K |
-| Jewellery & Accessories | £5,847 | 39 | 35 | 947 | £47K |
+| Umbrellas & Rainwear | £9,056 | 26 | 8 | 702 | £87K |
+| Floral & Botanical | £6,025 | 41 | 32 | 1,334 | £55K |
+| Jewellery & Accessories | £5,847 | 39 | 21 | 947 | £47K |
 
 Takeaway: big categories are already widely bought, so their opportunity is mostly **existing buyers buying more**. Christmas is the standout for **new buyers**.
 

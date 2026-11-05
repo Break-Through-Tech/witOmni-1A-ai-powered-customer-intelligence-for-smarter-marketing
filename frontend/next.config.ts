@@ -1,8 +1,11 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
   cacheComponents: true,
+  // lib/data.ts reads these at runtime, so make sure they ship with every route.
+  outputFileTracingIncludes: {
+    "/*": ["./data/**/*.json"],
+  },
   partialPrefetching: true,
   turbopack: {
     rules: {

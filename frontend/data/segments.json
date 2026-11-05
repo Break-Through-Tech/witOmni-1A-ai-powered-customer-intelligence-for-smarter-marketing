@@ -1,0 +1,230 @@
+[
+  {
+    "all_customers_medians": {
+      "avg_order_value": 291.94,
+      "invoice_count": 2.0,
+      "recency_days": 51.0,
+      "total_spend": 668.57
+    },
+    "avg_probability": 0.8474,
+    "customer_share": 0.2764,
+    "customers": 1199,
+    "leans": [
+      {
+        "category": "Clocks",
+        "lean": 1.106,
+        "slug": "clocks"
+      }
+    ],
+    "medians": {
+      "avg_order_value": 342.39,
+      "invoice_count": 7.0,
+      "recency_days": 13.0,
+      "total_spend": 2322.4
+    },
+    "no_category_scores": 94,
+    "revenue": 6297528.78,
+    "revenue_share": 0.7086,
+    "slug": "loyal-regulars",
+    "top_categories": [
+      {
+        "category": "Kitchenware & Dining",
+        "expected_spend": 39609.79,
+        "likely_buyers": 620,
+        "slug": "kitchenware-dining"
+      },
+      {
+        "category": "Party & Tableware",
+        "expected_spend": 31746.2,
+        "likely_buyers": 636,
+        "slug": "party-tableware"
+      },
+      {
+        "category": "Bags, Purses & Travel",
+        "expected_spend": 31647.93,
+        "likely_buyers": 587,
+        "slug": "bags-purses-travel"
+      },
+      {
+        "category": "Boxes, Tins & Storage",
+        "expected_spend": 31446.8,
+        "likely_buyers": 610,
+        "slug": "boxes-tins-storage"
+      },
+      {
+        "category": "Baking",
+        "expected_spend": 30810.54,
+        "likely_buyers": 512,
+        "slug": "baking"
+      }
+    ]
+  },
+  {
+    "all_customers_medians": {
+      "avg_order_value": 291.94,
+      "invoice_count": 2.0,
+      "recency_days": 51.0,
+      "total_spend": 668.57
+    },
+    "avg_probability": 0.6319,
+    "customer_share": 0.3412,
+    "customers": 1480,
+    "leans": [],
+    "medians": {
+      "avg_order_value": 302.55,
+      "invoice_count": 3.0,
+      "recency_days": 54.5,
+      "total_spend": 744.19
+    },
+    "no_category_scores": 378,
+    "revenue": 1675428.12,
+    "revenue_share": 0.1885,
+    "slug": "occasional-regulars",
+    "top_categories": [
+      {
+        "category": "Kitchenware & Dining",
+        "expected_spend": 23393.02,
+        "likely_buyers": 196,
+        "slug": "kitchenware-dining"
+      },
+      {
+        "category": "Party & Tableware",
+        "expected_spend": 19254.08,
+        "likely_buyers": 238,
+        "slug": "party-tableware"
+      },
+      {
+        "category": "Boxes, Tins & Storage",
+        "expected_spend": 18909.39,
+        "likely_buyers": 217,
+        "slug": "boxes-tins-storage"
+      },
+      {
+        "category": "Bags, Purses & Travel",
+        "expected_spend": 18518.48,
+        "likely_buyers": 197,
+        "slug": "bags-purses-travel"
+      },
+      {
+        "category": "Stationery & Crafts",
+        "expected_spend": 18184.62,
+        "likely_buyers": 256,
+        "slug": "stationery-crafts"
+      }
+    ]
+  },
+  {
+    "all_customers_medians": {
+      "avg_order_value": 291.94,
+      "invoice_count": 2.0,
+      "recency_days": 51.0,
+      "total_spend": 668.57
+    },
+    "avg_probability": 0.427,
+    "customer_share": 0.2015,
+    "customers": 874,
+    "leans": [
+      {
+        "category": "Christmas",
+        "lean": 1.142,
+        "slug": "christmas"
+      }
+    ],
+    "medians": {
+      "avg_order_value": 220.84,
+      "invoice_count": 1.0,
+      "recency_days": 72.0,
+      "total_spend": 259.02
+    },
+    "no_category_scores": 516,
+    "revenue": 466498.51,
+    "revenue_share": 0.0525,
+    "slug": "new-and-undecided",
+    "top_categories": [
+      {
+        "category": "Kitchenware & Dining",
+        "expected_spend": 4483.54,
+        "likely_buyers": 8,
+        "slug": "kitchenware-dining"
+      },
+      {
+        "category": "Party & Tableware",
+        "expected_spend": 3898.17,
+        "likely_buyers": 7,
+        "slug": "party-tableware"
+      },
+      {
+        "category": "Boxes, Tins & Storage",
+        "expected_spend": 3794.3,
+        "likely_buyers": 7,
+        "slug": "boxes-tins-storage"
+      },
+      {
+        "category": "Bags, Purses & Travel",
+        "expected_spend": 3534.69,
+        "likely_buyers": 5,
+        "slug": "bags-purses-travel"
+      },
+      {
+        "category": "Stationery & Crafts",
+        "expected_spend": 3528.76,
+        "likely_buyers": 8,
+        "slug": "stationery-crafts"
+      }
+    ]
+  },
+  {
+    "all_customers_medians": {
+      "avg_order_value": 291.94,
+      "invoice_count": 2.0,
+      "recency_days": 51.0,
+      "total_spend": 668.57
+    },
+    "avg_probability": 0.3576,
+    "customer_share": 0.181,
+    "customers": 785,
+    "leans": [],
+    "medians": {
+      "avg_order_value": 225.6,
+      "invoice_count": 1.0,
+      "recency_days": 267.0,
+      "total_spend": 271.85
+    },
+    "no_category_scores": 1,
+    "revenue": 447753.48,
+    "revenue_share": 0.0504,
+    "slug": "at-risk-lapsed",
+    "top_categories": [
+      {
+        "category": "Kitchenware & Dining",
+        "expected_spend": 9444.26,
+        "likely_buyers": 3,
+        "slug": "kitchenware-dining"
+      },
+      {
+        "category": "Boxes, Tins & Storage",
+        "expected_spend": 7998.44,
+        "likely_buyers": 7,
+        "slug": "boxes-tins-storage"
+      },
+      {
+        "category": "Bags, Purses & Travel",
+        "expected_spend": 7648.85,
+        "likely_buyers": 6,
+        "slug": "bags-purses-travel"
+      },
+      {
+        "category": "Stationery & Crafts",
+        "expected_spend": 7640.08,
+        "likely_buyers": 9,
+        "slug": "stationery-crafts"
+      },
+      {
+        "category": "Party & Tableware",
+        "expected_spend": 7628.36,
+        "likely_buyers": 5,
+        "slug": "party-tableware"
+      }
+    ]
+  }
+]

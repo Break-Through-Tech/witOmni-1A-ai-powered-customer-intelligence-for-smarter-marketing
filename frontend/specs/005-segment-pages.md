@@ -95,7 +95,7 @@ Current medians:
 - **"Leans toward" note:** below the chart, only if the segment leans toward a category by **≥ 10%**, e.g. "Leans toward Christmas (+14% vs. average)." Max 2 categories. No note if nothing reaches 10%.
   - **Lean** = the category's share of this segment's total buy probability ÷ its share across all customers. Measured against the segment's own level, since Loyal regulars score higher on everything.
   - Only categories with ≥ 20 likely buyers (≥ 30%) in the segment count, to avoid noise.
-  - **Why not a full "distinctive" chart:** tested 2026-11-03. Segments differ in *how much* they buy, not *what*: the biggest lean is +14%, most are +1–5%. Current leans: Loyal regulars → Clocks (+11%); New & undecided → Christmas (+14%); At-risk / lapsed → Christmas (+10%); Occasional regulars → none.
+  - **Why not a full "distinctive" chart:** tested 2026-11-03. Segments differ in *how much* they buy, not *what*: the biggest lean is +14%, most are +1–5%. Current leans (from `build_data.py`): Loyal regulars → Clocks (+11%); New & undecided → Christmas (+14%); Occasional regulars and At-risk / lapsed → none (At-risk's biggest is Christmas at +9.6%, just under the cutoff).
 
 ### 3.7 Customers in this segment
 - The Customers table (spec 006) pre-filtered to this segment, sorted by chance of buying again (highest first).

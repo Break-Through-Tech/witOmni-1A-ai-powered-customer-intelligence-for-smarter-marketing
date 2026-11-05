@@ -66,7 +66,7 @@ All money in GBP, rounded to 2 decimals. Probabilities as 0–1, rounded to 4 de
 - `revenue_at_risk`: total historical spend of At-risk / lapsed customers
 - `expected_category_spend`: sum of Expected spend (£) across all customer × category rows
 - `category_scores_current` (true/false): whether category scores cover the same 90 days as repeat scores. The script reads `scored_as_of` from `data/category_data/customer_per_category_scores_meta.json`; if that file is missing (today), it's `false`. The re-run (§7) writes that file, so the flag flips by itself. The UI shows "Based on an earlier prediction window" **only when this is false**; nobody has to remember to remove it.
-- `top_actions`: the two focus segments first (Occasional regulars, New & undecided), then the rest by revenue
+- `top_actions`: the two focus segments first (Occasional regulars, New & undecided), then the rest by revenue. Only `{ segment, customers }`: the action text comes from `lib/segments.ts`
 
 ### 3.2 `segments.json`
 One object per segment: `slug`, `customers`, `revenue`, `revenue_share`, `avg_probability`, medians (`recency_days`, `invoice_count`, `total_spend`, `avg_order_value`), and the same medians for **all customers** for comparison. Names, colors, rules text, and recommended actions are **not** stored here; they live in `lib/segments.ts` (§5).
@@ -88,7 +88,7 @@ One row per customer (4,338):
 Keyed by customer ID. Everything in 3.3, plus:
 - All 10 behavior features from the scores file
 - `top_categories`: top 5 by Expected spend, each `{ category, buy_probability, expected_spend, already_buys }`, or `null`
-- `monthly_spend`: `[{ "month": "2010-12", "spend": 711.79 }, ...]` for the purchase history chart
+- `monthly_spend`: `[{ "month": "2010-12", "spend": 711.79, "orders": 1 }, ...]`, all 13 months with zeros, for the purchase history chart
 
 Read by the customer profile page and the `get_customer` tool. Never sent to the browser whole.
 
@@ -116,8 +116,11 @@ Two ranked lists, highest **Expected spend (£)** first (000 §6.4):
 }
 ```
 - **Existing buyers:** bought from this category at least once
-- **Likely new buyers:** never bought from it **and** buy probability ≥ 30%
+- **Likely new buyers:** never bought from it (full history) **and** buy probability ≥ 30%
+- Each row also has `recency_days` (for "Last bought"); each file has `existing_total` and `likely_new_total` (counts before the cap)
+- Only customers with category scores appear (customers without scores can't be ranked)
 - Each list capped at the top 500 to keep files small
+- `categories.json` also carries `likely_new_buyers` (the count) for the thin-list check
 - If a category has fewer than 20 likely new buyers, the page says so instead of showing a near-empty list
 
 **Why 30% (backtest, 2026-11-03):** the category model scores every customer on all 27 categories, including ones they never bought (zero history in that category, plus their history elsewhere). Checked against what customers actually bought in the quarter after the model's cutoff:
@@ -130,7 +133,8 @@ Two ranked lists, highest **Expected spend (£)** first (000 §6.4):
 | ≥ 50% | 725 | 57% |
 
 - Ranking quality within never-bought categories: AUC 0.75 (vs 0.77 for categories already bought)
-- 23 of 27 categories have 50+ candidates at 30%. Thin: Umbrellas (9), Jewellery (35), Clocks (36), Floral (45)
+- The backtest counts "never bought" **before the cutoff**; the live lists use the full history, so their counts are lower (e.g. Christmas 525, not 1,082).
+- 23 of 27 categories have 50+ candidates at 30% (backtest). Thin: Umbrellas (9), Jewellery (35), Clocks (36), Floral (45)
 - Christmas dominates (1,082 candidates), partly because the test quarter includes Christmas
 - Slightly optimistic: the exported scores include customers the model trained on
 
