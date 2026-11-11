@@ -11,6 +11,7 @@ import { checkLimits } from "@/lib/assistant/limits";
 import { AssistantConfigError, assistantModel } from "@/lib/assistant/model";
 import { prefetchFor } from "@/lib/assistant/prefetch";
 import { buildInstructions } from "@/lib/assistant/prompt";
+import { SEGMENT_GUIDE_SOURCE, type AssistantMetadata } from "@/lib/assistant/sources";
 import { assistantTools } from "@/lib/assistant/tools";
 
 // Strategy assistant endpoint (spec 008).
@@ -75,10 +76,17 @@ export async function POST(req: Request) {
     abortSignal: req.signal,
   });
 
+  // Sources the model can cite that don't arrive as a tool result. Tool results
+  // carry their own `source`; the chat checks every citation against both.
+  const metadata: AssistantMetadata = {
+    sources: [SEGMENT_GUIDE_SOURCE, ...(prefetched ? [prefetched.source] : [])],
+  };
+
   return createUIMessageStreamResponse({
     stream: toUIMessageStream({
       stream: result.stream,
       originalMessages: messages,
+      messageMetadata: ({ part }) => (part.type === "start" ? metadata : undefined),
       onError: (error) => {
         console.error("[assistant]", error);
         const msg = String((error as Error)?.message ?? "");

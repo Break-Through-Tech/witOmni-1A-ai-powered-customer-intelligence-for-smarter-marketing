@@ -10,6 +10,7 @@
   --text-muted: #7a7974;
   --accent: #2a78d6;
   --neutral-bar: #b9b8b2; /* "all customers" comparison bars */
+  --warning: #b42318; /* unverified citations */
 }
 
 @media (prefers-color-scheme: dark) {
@@ -22,6 +23,7 @@
     --text-muted: #8f8e87;
     --accent: #3987e5;
     --neutral-bar: #5c5b56;
+    --warning: #f97066;
   }
 }
 
@@ -34,6 +36,7 @@
   --text-muted: #8f8e87;
   --accent: #3987e5;
   --neutral-bar: #5c5b56;
+  --warning: #f97066;
 }
 
 @theme inline {
@@ -44,6 +47,7 @@
   --color-secondary: var(--text-secondary);
   --color-muted: var(--text-muted);
   --color-accent: var(--accent);
+  --color-warning: var(--warning);
   --font-sans: var(--font-inter);
   --radius-card: 8px;
   --radius-control: 6px;

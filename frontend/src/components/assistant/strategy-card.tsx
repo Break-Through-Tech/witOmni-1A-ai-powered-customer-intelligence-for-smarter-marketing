@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import type { Source } from "@/lib/assistant/sources";
 import { num } from "@/lib/format";
 import { getSegment } from "@/lib/segments";
 import { SegmentBadge } from "../segment-badge";
@@ -17,6 +18,8 @@ export interface StrategyOutput {
   draft_body: string;
   audience_key: string;
   audience: { type: string; label: string; count: number; href: string; segment?: string } | null;
+  /** source.ids the model says the plan relies on (checked against `known`). */
+  sources?: string[];
 }
 
 function asText(s: StrategyOutput) {
@@ -28,6 +31,7 @@ function asText(s: StrategyOutput) {
     `Message: ${s.message_angle}`,
     `Timing: ${s.timing}`,
     `Measure: ${s.success_metric}`,
+    ...(s.sources?.length ? [`Based on: ${s.sources.join(", ")}`] : []),
     "",
     `Subject: ${s.draft_subject}`,
     "",
@@ -36,8 +40,20 @@ function asText(s: StrategyOutput) {
 }
 
 /** Strategy card (003 §5, 008 §3, §7). */
-export function StrategyCard({ plan, onRegenerate }: { plan: StrategyOutput; onRegenerate?: () => void }) {
+export function StrategyCard({
+  plan,
+  known,
+  onRegenerate,
+}: {
+  plan: StrategyOutput;
+  /** Sources the assistant actually looked up; anything else is flagged. */
+  known: Map<string, Source>;
+  onRegenerate?: () => void;
+}) {
   const [copied, setCopied] = useState(false);
+  const ids = [...new Set(plan.sources ?? [])];
+  const cited = ids.flatMap((id) => (known.has(id) ? [known.get(id)!] : []));
+  const unverified = ids.filter((id) => !known.has(id));
   const seg = plan.audience?.segment ? getSegment(plan.audience.segment) : undefined;
   const rows: [string, string][] = [
     ["Objective", plan.objective],
@@ -71,6 +87,30 @@ export function StrategyCard({ plan, onRegenerate }: { plan: StrategyOutput; onR
             <dd>{v}</dd>
           </div>
         ))}
+        <dt className="text-muted">Based on</dt>
+        <dd className="space-y-1">
+          {cited.length > 0 && (
+            <ul className="flex flex-wrap gap-x-3 gap-y-1">
+              {cited.map((s) => (
+                <li key={s.id}>
+                  <Link href={s.href} className="text-accent hover:underline">
+                    {s.label} ›
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          )}
+          {unverified.length > 0 && (
+            <p role="note" className="text-xs text-warning">
+              ⚠️ Cites data the assistant never looked up ({unverified.join(", ")}). Check this plan on the dashboard.
+            </p>
+          )}
+          {ids.length === 0 && (
+            <p role="note" className="text-xs text-secondary">
+              ⚠️ No data cited. Check this plan on the dashboard before acting on it.
+            </p>
+          )}
+        </dd>
       </dl>
 
       <details className="mt-4 rounded-[6px] border border-border bg-surface-0 p-3">

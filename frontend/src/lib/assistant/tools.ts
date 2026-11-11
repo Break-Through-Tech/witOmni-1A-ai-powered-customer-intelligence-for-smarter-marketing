@@ -29,6 +29,10 @@ export const strategyInput = z.object({
   success_metric: z.string().describe("One measurable thing over the next 90 days"),
   draft_subject: z.string().describe("Email subject line"),
   draft_body: z.string().describe("At most 120 words. Use {first_name} as the greeting placeholder."),
+  sources: z
+    .array(z.string())
+    .min(1)
+    .describe("source.id of every data result this plan relies on, e.g. [\"segment:occasional-regulars\", \"segment-guide\"]"),
 });
 
 export type StrategyInput = z.infer<typeof strategyInput>;

@@ -11,6 +11,7 @@ import {
   getSegments,
 } from "../data";
 import { getSegment, SEGMENTS } from "../segments";
+import type { Source } from "./sources";
 
 const MAX_LIST = 20;
 
@@ -38,6 +39,7 @@ export async function overviewLookup() {
   const o = await getOverview();
   const categories = await getCategories();
   return {
+    source: { id: "overview", label: "Business overview", href: "/" } satisfies Source,
     data_range: o.data_range,
     predictions_cover: "the next 90 days",
     total_customers: o.total_customers,
@@ -65,6 +67,7 @@ export async function segmentLookup(segment: string) {
   const stats = (await getSegments()).find((s) => s.slug === seg.slug);
   if (!stats) return { error: "No data for this segment" };
   return {
+    source: { id: `segment:${seg.slug}`, label: `${seg.name} segment`, href: `/segments/${seg.slug}` } satisfies Source,
     segment: seg.name,
     focus_segment: seg.focus,
     description: seg.description,
@@ -102,6 +105,7 @@ export async function customerLookup(customerId: number) {
   const seg = getSegment(c.segment);
   const recent = c.monthly_spend.filter((m) => m.orders > 0).slice(-3);
   return {
+    source: { id: `customer:${c.id}`, label: `Customer ${c.id}`, href: `/customers/${c.id}` } satisfies Source,
     customer_id: c.id,
     segment: seg?.name ?? c.segment,
     segment_recommended_action: seg?.action,
@@ -152,6 +156,11 @@ export async function categoryLookup(args: {
   };
   const newBuyers = pick(detail.likely_new_buyers);
   return {
+    source: {
+      id: `category:${cat.slug}`,
+      label: `${cat.name} category${seg ? ` (${seg.name})` : ""}`,
+      href: `/categories/${cat.slug}`,
+    } satisfies Source,
     category: cat.name,
     segment_filter: seg?.name ?? "all segments",
     category_totals_all_segments: {
@@ -177,6 +186,11 @@ export async function lowCategoriesLookup(by: "buyers" | "revenue" = "buyers", l
   const rank = by === "buyers" ? "rank_by_buyers" : "rank_by_revenue";
   const n = Math.min(Math.max(limit, 1), 10);
   return {
+    source: {
+      id: `weakest-categories:${by}`,
+      label: `Weakest categories by ${by}`,
+      href: "/categories",
+    } satisfies Source,
     ranked_by: by === "buyers" ? "fewest buyers" : "least revenue",
     weakest_categories: [...(await getCategories())]
       .sort((a, b) => a[rank] - b[rank])

@@ -4,6 +4,7 @@ import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport, type UIMessage } from "ai";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Fragment, useEffect, useRef, useState } from "react";
+import { type Citations, knownSources, numberCitations, SourceList, withCitations } from "./citations";
 import { StrategyCard, type StrategyOutput } from "./strategy-card";
 
 const EXAMPLES = [
@@ -47,11 +48,15 @@ function friendlyError(err: Error | undefined): string {
     : "The assistant is busy right now. The rest of the dashboard still works.";
 }
 
-/** Minimal formatting for model text: paragraphs, "- " / "1. " lists, **bold**. */
-function RichText({ text }: { text: string }) {
+/** Minimal formatting for model text: paragraphs, "- " / "1. " lists, **bold**, [source] citations. */
+function RichText({ text, citations }: { text: string; citations: Citations }) {
   const bold = (line: string) =>
     line.split(/(\*\*[^*]+\*\*)/g).map((seg, i) =>
-      seg.startsWith("**") && seg.endsWith("**") ? <strong key={i}>{seg.slice(2, -2)}</strong> : <Fragment key={i}>{seg}</Fragment>,
+      seg.startsWith("**") && seg.endsWith("**") ? (
+        <strong key={i}>{withCitations(seg.slice(2, -2), citations, `b${i}`)}</strong>
+      ) : (
+        <Fragment key={i}>{withCitations(seg, citations, `t${i}`)}</Fragment>
+      ),
     );
   const blocks = text.trim().split(/\n{2,}/);
   return (
@@ -177,14 +182,26 @@ export function AssistantChat() {
               </div>
             );
           }
+          // Check every [source] the answer cites against what was actually looked up.
+          const known = knownSources(messages, mi);
+          const texts = m.parts.flatMap((p) => (p.type === "text" && p.text.trim() ? [p.text] : []));
+          const citations = numberCitations(texts, known);
+          const done = !(isLast && busy);
           return (
             <div key={m.id} className="max-w-3xl space-y-3 text-sm">
               {m.parts.map((p, i) => {
-                if (p.type === "text") return p.text.trim() ? <RichText key={i} text={p.text} /> : null;
+                if (p.type === "text") return p.text.trim() ? <RichText key={i} text={p.text} citations={citations} /> : null;
                 if (p.type.startsWith("tool-") && "state" in p) {
                   const name = p.type.slice(5);
                   if (name === "present_strategy" && p.state === "output-available") {
-                    return <StrategyCard key={i} plan={p.output as StrategyOutput} onRegenerate={isLast && !busy ? redo : undefined} />;
+                    return (
+                      <StrategyCard
+                        key={i}
+                        plan={p.output as StrategyOutput}
+                        known={known}
+                        onRegenerate={isLast && !busy ? redo : undefined}
+                      />
+                    );
                   }
                   if (p.state === "input-streaming" || p.state === "input-available") {
                     return (
@@ -196,6 +213,9 @@ export function AssistantChat() {
                 }
                 return null;
               })}
+              {texts.length > 0 && done && (
+                <SourceList citations={citations} uncited={citations.cited.length === 0 && citations.unverified.length === 0} />
+              )}
             </div>
           );
         })}
